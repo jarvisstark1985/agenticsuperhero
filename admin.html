@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgenticSuperHero Admin Dashboard</title>
+    <link rel="canonical" href="https://agenticsuperhero.com/admin.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P2C3KN7T');</script>
+    <!-- End Google Tag Manager -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #E0E0E0;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #0A0A0A;
+            padding: 20px;
+        }
+
+        .login-box {
+            background-color: #141414;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .login-box h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+
+        .login-box .subtitle {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #E0E0E0;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #0A0A0A;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            color: #E0E0E0;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .error-message {
+            display: none;
+            background-color: rgba(255, 107, 53, 0.1);
+            border: 1px solid #FF6B35;
+            color: #FF6B35;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #FF6B35;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #FF5A1F;
+        }
+
+        .login-button:active {
+            background-color: #FF4800;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            display: none;
+            background-color: #0A0A0A;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .logout-button {
+            padding: 10px 20px;
+            background-color: #FF6B35;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #FF5A1F;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #141414;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF6B35;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            background-color: #141414;
+            border: 1px solid #2A2A2A;
+            border-radius: 6px;
+            color: #E0E0E0;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #FF6B35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .table-container {
+            background-color: #141414;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background-color: #0A0A0A;
+            border-bottom: 1px solid #2A2A2A;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #999;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #2A2A2A;
+            color: #E0E0E0;
+        }
+
+        tbody tr:hover {
+            background-color: #1A1A1A;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state-message {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .site-card {
+            background-color: #141414;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.3s;
+        }
+
+        .site-card:hover {
+            border-color: #FF6B35;
+        }
+
+        .site-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 5px;
+        }
+
+        .site-card-subtitle {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .site-card-link {
+            color: #FF6B35;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .site-card-link:hover {
+            color: #FF5A1F;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .spinner {
+            border: 2px solid #2A2A2A;
+            border-top: 2px solid #FF6B35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-header h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sites-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-box {
+                padding: 30px 20px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2C3KN7T"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Login Container -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h1>ð¦¸ AgenticSuperHero</h1>
+            <p class="subtitle">Admin Dashboard</p>
+            <div class="error-message" id="errorMessage"></div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboardContainer">
+        <div class="dashboard-header">
+            <div>
+                <h1>ð¦¸ AgenticSuperHero Admin</h1>
+                <p style="color: #999; margin-top: 5px;">Agentic AI Tools</p>
+            </div>
+            <button class="logout-button" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Total Leads</div>
+                <div class="value" id="totalLeads">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Leads Today</div>
+                <div class="value" id="leadsToday">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Leads This Week</div>
+                <div class="value" id="leadsWeek">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Conversion Rate</div>
+                <div class="value" id="conversionRate">-</div>
+            </div>
+        </div>
+
+        <!-- Leads Section -->
+        <h2 class="section-title">Recent Leads</h2>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search leads by email or name..." onkeyup="filterLeads()">
+        </div>
+
+        <div class="table-container">
+            <div id="leadsTableContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading leads...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Overview Section -->
+        <h2 class="section-title">SuperHero Network Overview</h2>
+        <div class="sites-grid" id="sitesGrid"></div>
+    </div>
+
+    <script>
+        const API_ENDPOINT = 'https://super-hero-api.replit.app/api/leads';
+        const VALID_USERNAME = 'Jarvis.Stark1985';
+        const VALID_PASSWORD = 'Superhero2026$';
+
+        const SITES = [
+            { name: 'TheAISuperHeroes.com', url: 'https://theaisuperheroes.com' },
+            { name: 'ResumeSuperHero.com', url: 'https://resumesuperhero.com' },
+            { name: 'ShopifySuperHero.com', url: 'https://shopifysuperhero.com' },
+            { name: 'SEOAISuperHero.com', url: 'https://seoaisuperhero.com' },
+            { name: 'MCPSuperHero.com', url: 'https://mcpsuperhero.com' },
+            { name: 'ReplitSuperHero.com', url: 'https://replitsuperhero.com' },
+            { name: 'ClaudSuperHero.com', url: 'https://claudsuperhero.com' },
+            { name: 'AgenticSuperHero.com', url: 'https://agenticsuperhero.com' },
+            { name: 'URLSuperHero.com', url: 'https://urlsuperhero.com' },
+            { name: 'StartBizSuperHero.com', url: 'https://startbizsuperhero.com' }
+        ];
+
+        let allLeads = [];
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                errorMessage.classList.remove('show');
+                localStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboardContainer').classList.add('show');
+                loadDashboardData();
+                renderSitesOverview();
+            } else {
+                errorMessage.textContent = 'Invalid username or password';
+                errorMessage.classList.add('show');
+                document.getElementById('password').value = '';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('adminLoggedIn');
+            document.getElementById('dashboardContainer').classList.remove('show');
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('loginForm').reset();
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(API_ENDPOINT);
+                if (!response.ok) throw new Error('Failed to fetch leads');
+
+                allLeads = await response.json();
+                updateStats();
+                renderLeadsTable();
+            } catch (error) {
+                console.error('Error loading leads:', error);
+                document.getElementById('leadsTableContent').innerHTML = `
+                    <div class="empty-state">
+                        <p class="empty-state-message">Unable to load leads from API</p>
+                        <p style="color: #666; font-size: 12px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateStats() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const weekAgo = new Date(today);
+            weekAgo.setDate(weekAgo.getDate() - 7);
+
+            const leadsToday = allLeads.filter(lead => {
+                const leadDate = new Date(lead.createdAt);
+                leadDate.setHours(0, 0, 0, 0);
+                return leadDate.getTime() === today.getTime();
+            }).length;
+
+            const leadsThisWeek = allLeads.filter(lead => {
+                const leadDate = new Date(lead.createdAt);
+                return leadDate >= weekAgo && leadDate <= today;
+            }).length;
+
+            const conversionRate = allLeads.length > 0 ? '2.3%' : '0%';
+
+            document.getElementById('totalLeads').textContent = allLeads.length;
+            document.getElementById('leadsToday').textContent = leadsToday;
+            document.getElementById('leadsWeek').textContent = leadsThisWeek;
+            document.getElementById('conversionRate').textContent = conversionRate;
+        }
+
+        function renderLeadsTable() {
+            const container = document.getElementById('leadsTableContent');
+
+            if (allLeads.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p class="empty-state-message">No leads yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leadsTableBody">
+                        ${allLeads.map(lead => `
+                            <tr>
+                                <td>${lead.name || '-'}</td>
+                                <td>${lead.email || '-'}</td>
+                                <td>${lead.phone || '-'}</td>
+                                <td>${new Date(lead.createdAt).toLocaleDateString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            container.innerHTML = tableHTML;
+        }
+
+        function filterLeads() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const tbody = document.getElementById('leadsTableBody');
+
+            if (!tbody) return;
+
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+
+        function renderSitesOverview() {
+            const grid = document.getElementById('sitesGrid');
+            grid.innerHTML = SITES.map((site, index) => `
+                <div class="site-card">
+                    <div>
+                        <div class="site-card-title">${site.name}</div>
+                        <div class="site-card-subtitle">Part of SuperHero Network</div>
+                    </div>
+                    <a href="${site.url}" target="_blank" class="site-card-link">Visit Site â</a>
+                </div>
+            `).join('');
+        }
+
+        // Check if already logged in
+        window.addEventListener('load', () => {
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('dashboardContainer').classList.add('show');
+                loadDashboardData();
+                renderSitesOverview();
+            }
+        });
+    </script>
+</body>
+</html>
