@@ -421,7 +421,7 @@
     <!-- Login Container -->
     <div class="login-container" id="loginContainer">
         <div class="login-box">
-            <h1>ð¦¸ AgenticSuperHero</h1>
+            <h1>🦸 AgenticSuperHero</h1>
             <p class="subtitle">Client Dashboard</p>
             <div class="error-message" id="errorMessage"></div>
             <form id="loginForm" onsubmit="handleLogin(event)">
@@ -442,7 +442,7 @@
     <div class="dashboard-container" id="dashboardContainer">
         <div class="dashboard-header">
             <div>
-                <h1>ð¦¸ SuperHero Network</h1>
+                <h1>🦸 SuperHero Network</h1>
                 <p style="color: #999; margin-top: 5px;">Agentic AI Tools</p>
             </div>
             <button class="logout-button" onclick="handleLogout()">Logout</button>
@@ -452,7 +452,7 @@
         <div class="cta-section">
             <div class="cta-title">Join Our Network</div>
             <p class="cta-subtitle">Get access to AI-powered tools and connect with the superhero community</p>
-            <button class="cta-button" onclick="scrollToSignup()">Start Here â</button>
+            <button class="cta-button" onclick="scrollToSignup()">Start Here →</button>
         </div>
 
         <!-- Network Overview Section -->
@@ -485,7 +485,7 @@
                     <label for="signupPhone">Phone Number</label>
                     <input type="tel" id="signupPhone" placeholder="+1 (555) 000-0000" style="padding: 12px; background-color: #0A0A0A; border: 1px solid #2A2A2A; border-radius: 6px; color: #E0E0E0; font-family: 'Inter', sans-serif; font-size: 14px; width: 100%; margin-bottom: 15px;">
                 </div>
-                <button type="submit" class="cta-button" style="width: 100%;">Submit â</button>
+                <button type="submit" class="cta-button" style="width: 100%;">Submit →</button>
             </form>
             <div id="signupMessage" style="margin-top: 15px; text-align: center; display: none; padding: 15px; border-radius: 6px;"></div>
         </div>
@@ -497,16 +497,16 @@
         const VALID_PASSWORD = 'Superhero2026$';
 
         const SITES = [
-            { name: 'TheAISuperHeroes.com', url: 'https://theaisuperheroes.com', icon: 'ð¤' },
-            { name: 'ResumeSuperHero.com', url: 'https://resumesuperhero.com', icon: 'ð' },
-            { name: 'ShopifySuperHero.com', url: 'https://shopifysuperhero.com', icon: 'ðï¸' },
-            { name: 'SEOAISuperHero.com', url: 'https://seoaisuperhero.com', icon: 'ð' },
-            { name: 'MCPSuperHero.com', url: 'https://mcpsuperhero.com', icon: 'âï¸' },
-            { name: 'ReplitSuperHero.com', url: 'https://replitsuperhero.com', icon: 'ð»' },
-            { name: 'ClaudSuperHero.com', url: 'https://claudsuperhero.com', icon: 'ð§ ' },
-            { name: 'AgenticSuperHero.com', url: 'https://agenticsuperhero.com', icon: 'ð¯' },
-            { name: 'URLSuperHero.com', url: 'https://urlsuperhero.com', icon: 'ð' },
-            { name: 'StartBizSuperHero.com', url: 'https://startbizsuperhero.com', icon: 'ð' }
+            { name: 'TheAISuperHeroes.com', url: 'https://theaisuperheroes.com', icon: '🤖' },
+            { name: 'ResumeSuperHero.com', url: 'https://resumesuperhero.com', icon: '📄' },
+            { name: 'ShopifySuperHero.com', url: 'https://shopifysuperhero.com', icon: '🛍️' },
+            { name: 'SEOAISuperHero.com', url: 'https://seoaisuperhero.com', icon: '🔍' },
+            { name: 'MCPSuperHero.com', url: 'https://mcpsuperhero.com', icon: '⚙️' },
+            { name: 'ReplitSuperHero.com', url: 'https://replitsuperhero.com', icon: '💻' },
+            { name: 'ClaudSuperHero.com', url: 'https://claudsuperhero.com', icon: '🧠' },
+            { name: 'AgenticSuperHero.com', url: 'https://agenticsuperhero.com', icon: '🎯' },
+            { name: 'URLSuperHero.com', url: 'https://urlsuperhero.com', icon: '🌐' },
+            { name: 'StartBizSuperHero.com', url: 'https://startbizsuperhero.com', icon: '🚀' }
         ];
 
         let allLeads = [];
@@ -558,7 +558,7 @@
                         <div class="card-title">${site.name}</div>
                         <div class="card-subtitle">Part of SuperHero Network</div>
                     </div>
-                    <a href="${site.url}" target="_blank" class="card-link">Visit Site â</a>
+                    <a href="${site.url}" target="_blank" class="card-link">Visit Site →</a>
                 </div>
             `).join('');
         }
@@ -646,7 +646,7 @@
                 if (!response.ok) throw new Error('Failed to submit lead');
 
                 const result = await response.json();
-                messageDiv.innerHTML = 'â Thank you! Your information has been submitted. Welcome to the SuperHero Network!';
+                messageDiv.innerHTML = '✓ Thank you! Your information has been submitted. Welcome to the SuperHero Network!';
                 messageDiv.style.backgroundColor = 'rgba(107, 255, 53, 0.1)';
                 messageDiv.style.color = '#6BFF35';
                 messageDiv.style.borderLeft = '4px solid #6BFF35';
