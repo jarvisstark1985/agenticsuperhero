@@ -647,6 +647,7 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
     </style>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1472.0.min.js"></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -989,49 +990,58 @@
             submitBtn.textContent = 'Creating your link...';
 
             // API call
-            fetch('https://super-hero-api.replit.app/api/leads', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    referralSource: 'agenticsuperhero'
-                })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.json();
-            })
-            .then(data => {
-                // Generate referral link (using returned ref ID or generate new)
-                const refId = data.referralId || generateRefId();
-                const referralLink = `https://agenticsuperhero.com/?ref=${refId}`;
-
-                // Update referral link display
-                document.getElementById('referral-link').textContent = referralLink;
-                document.getElementById('referral-link').dataset.link = referralLink;
-
-                // Show success state
-                document.getElementById('lead-form').classList.add('form-hidden');
-                document.getElementById('success-state').classList.remove('form-hidden');
-
-                // Track conversion
-                if (window.gtag) {
-                    gtag('event', 'lead_captured', {
-                        'email': email,
-                        'referral_id': refId
+            // Save lead to S3
+            (async function() {
+                try {
+                    AWS.config.region = 'us-east-2';
+                    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                        IdentityPoolId: 'us-east-2:662dfd2a-8d86-4ee3-875b-cd55d0acff8d'
                     });
+                    await new Promise(function(resolve, reject) {
+                        AWS.config.credentials.get(function(err) { err ? reject(err) : resolve(); });
+                    });
+                    var s3 = new AWS.S3({ region: 'us-east-2' });
+                    var leadKey = 'leads/agenticsuperhero_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) + '.json';
+                    await s3.putObject({
+                        Bucket: 'superhero-clients-theaisuperheroes',
+                        Key: leadKey,
+                        Body: JSON.stringify({
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            source: 'agenticsuperhero',
+                            timestamp: new Date().toISOString(),
+                            userAgent: navigator.userAgent
+                        }),
+                        ContentType: 'application/json'
+                    }).promise();
+
+                    // Generate referral link
+                    var refId = generateRefId();
+                    var referralLink = 'https://agenticsuperhero.com/?ref=' + refId;
+
+                    // Update referral link display
+                    document.getElementById('referral-link').textContent = referralLink;
+                    document.getElementById('referral-link').dataset.link = referralLink;
+
+                    // Show success state
+                    document.getElementById('lead-form').classList.add('form-hidden');
+                    document.getElementById('success-state').classList.remove('form-hidden');
+
+                    // Track conversion
+                    if (window.gtag) {
+                        gtag('event', 'lead_captured', {
+                            'email': email,
+                            'referral_id': refId
+                        });
+                    }
+                } catch(error) {
+                    console.error('Error:', error);
+                    document.getElementById('emailError').textContent = 'Error creating account. Please try again.';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Get My Free Access \u2192';
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('emailError').textContent = 'Error creating account. Please try again.';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Get My Free Access →';
-            });
+            })();
         }
 
         function isValidEmail(email) {
